@@ -2,8 +2,8 @@ name: Nightly Python Job
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # Runs every night at 00:00 UTC
-
+  #- cron: "0 0 * * *"   # Runs every night at 00:00 UTC
+  cron: "*/5 * * * *"
 jobs:
   run-python:
     runs-on: ubuntu-latest
