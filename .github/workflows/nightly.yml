@@ -1,26 +1,32 @@
 name: Nightly Python Job
 
-# Triggers
 on:
   push:
-    branches: [ main ]   # Run immediately when pushing to main
+    branches: [ main ]
   schedule:
-    - cron: "0 0 * * *"  # Runs automatically every night at 00:00 UTC
+    - cron: "0 0 * * *"
 
 jobs:
   run-python:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v4
-
-      # Step 2: Setup Python
+        
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      # Step 3: Run the Python script
-      - name: Run Hello World
-        run: python main.py
+      - name: Run Hello World and save output
+        run: |
+          python main.py > output.txt
+          echo "Created file:"
+          cat output.txt
+
+      - name: Upload output artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-output
+          path: output.txt
+          retention-days: 7
